@@ -14,6 +14,26 @@ function date2sql(laDate){
 
 
 $(document).ready(function(){
+    $('#blocVenModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      // je prends les valeurs des data-*
+      var name = button.data('name'); 
+      var max = button.data('max'); 
+      var max_org = button.data('max_org'); 
+      var price = button.data('price'); 
+      var price_half = button.data('price_half'); 
+      var price_abn = button.data('price_abn'); 
+      var price_abn_half = button.data('price_abn_half'); 
+      // je rempli les champs avec les valeurs
+      var modal = $(this);
+      modal.find('.modal-body input[name="inputBloc"]').val(name);
+      modal.find('.modal-body input[name="inputMax"]').val(max);
+      modal.find('.modal-body input[name="inputMaxOrg"]').val(max_org);
+      modal.find('.modal-body input[name="inputPrice"]').val(price);
+      modal.find('.modal-body input[name="inputPriceHalf"]').val(price_half);
+      modal.find('.modal-body input[name="inputPriceAbn"]').val(price_abn);
+      modal.find('.modal-body input[name="inputPriceAbnHalf"]').val(price_abn_half);
+    });
     
     $('#exampleModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // Button that triggered the modal
@@ -94,6 +114,19 @@ $(document).ready(function(){
             });
         
     });
+    $('#btnDoBlocsVen').click( function () {
+            //var reserv = $('#Nreserve').val();
+            $.ajax({
+                url:'doBlocsVen.php',
+                method: "POST",
+                success: function(data) {
+                        $('#blocVenModal').modal('toggle')
+                        location.href="blocs_ven.php";
+                 }
+            });
+        
+    });
+
     
     $('#dtEnvoye').datepicker()
         .on('changeDate', function(e) {
