@@ -14,7 +14,7 @@ function date2sql(laDate){
 
 
 $(document).ready(function(){
-    $('#blocVenModal').on('show.bs.modal', function (event) {
+    $('#blocModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // Button that triggered the modal
       // je prends les valeurs des data-*
       var name = button.data('name'); 
@@ -114,6 +114,7 @@ $(document).ready(function(){
             });
         
     });
+    /*
     $('#btnDoBlocsVen').click( function () {
             //var reserv = $('#Nreserve').val();
             $.ajax({
@@ -126,7 +127,7 @@ $(document).ready(function(){
             });
         
     });
-
+    */
     
     $('#dtEnvoye').datepicker()
         .on('changeDate', function(e) {
@@ -159,5 +160,17 @@ $(document).ready(function(){
                  }
             });
         
-    });    
+    });
+    
+    $('#btnDoDispo').click( function () {
+            var jour = $('#jour').val();
+            $.ajax({
+                url:'inc/doDispo.php?jour='+jour,
+                success: function(data) {
+                        location.href="blocs.php?jour="+jour;
+                 }
+            });
+        
+    });
+
 });

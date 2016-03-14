@@ -1,6 +1,9 @@
 <?php 
 require_once 'inc/conn.php';
-$req = $pdo->prepare("SELECT  * FROM cd16_blocs_04  ORDER BY name  ");
+
+$jour=$_GET['jour'];
+
+$req = $pdo->prepare("SELECT  * FROM cd16_blocs_".$jour."  ORDER BY name  ");
 $req->execute();
 
 
@@ -16,10 +19,18 @@ $req->execute();
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Définition des blocs du Vendredi</a>
+        <a class="navbar-brand" href="#">Définition des blocs du <b><?= $jour ?></b></a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+          <li><button id="btnDoDispo" type="button" class="btn btn-info navbar-btn"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Places disponibles</button></li>
+      </ul>
     </div>
   </div><!-- /.container-fluid -->
 </nav>
+<div id="jour" hidden="true"><?= $jour ?></div>
 <div class="col-md-12">
     <table class="table table-striped table-hover ">
         <thead>
@@ -40,8 +51,8 @@ $req->execute();
                 <td style="text-align: left;color:red;"><?= $res->name; ?></td>
                 <td style="text-align: left;"><?= $res->max; ?></td>
                 <td style="text-align: left;"><?= $res->max_org; ?></td>
-                <td style="text-align: right;"><?= $res->places; ?></td>
-                <td style="text-align: right;"><?= $res->places_half; ?></td>
+                <td style="text-align: right;color:red;"><?= $res->places; ?></td>
+                <td style="text-align: right;color:red;"><?= $res->places_org; ?></td>
                 <td style="text-align: right;"><?= $res->price; ?> €</td>
                 <td style="text-align: right;"><?= $res->price_half; ?> €</td>
                 <td style="text-align: right;"><?= $res->price_abn; ?> €</td>
@@ -49,7 +60,7 @@ $req->execute();
                 <td style="text-align: right;">
                     <a href="#" class="btn btn-success btn-xs" title="modifier les blocs" 
                        data-toggle="modal" 
-                       data-target=".bs-blocven-modal-sm" 
+                       data-target=".bs-bloc-modal-sm" 
                        data-name="<?= $res->name; ?>" 
                        data-max="<?= $res->max; ?>" 
                        data-max_org="<?= $res->max_org; ?>" 
@@ -68,14 +79,14 @@ $req->execute();
 
 <!-- Modal doPlaces-->
 
-<div class="modal fade bs-blocven-modal-sm" id="blocVenModal" tabindex="-1" role="dialog" aria-labelledby="placesModalLabel">
+<div class="modal fade bs-bloc-modal-sm" id="blocModal" tabindex="-1" role="dialog" aria-labelledby="placesModalLabel">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" >Modifier le bloc</h4>
       </div>
-     <form action="inc/doBlocsVen.php" method="POST">
+     <form action="inc/doBlocs.php?jour=<?= $jour ?>" method="POST">
          <div class="modal-body ">
             <div class="form-group">
                 <label for="inputBloc" class="control-label">Bloc:</label>
@@ -107,7 +118,7 @@ $req->execute();
             </div>
          </div>
         <div class="modal-footer">
-            <button name="btnDoBlocsVen" id="btnDoBlocsVen" type="submit" class="btn btn-primary">Enregistrer</button>
+            <button name="btnDoBlocs" id="btnDoBlocsVen" type="submit" class="btn btn-primary">Enregistrer</button>
         </div>
      </form>
     </div>

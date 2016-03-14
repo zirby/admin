@@ -38,9 +38,22 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="index.php">Réservations</a></li>
-            <li><a href="ven04.php">VEN04</a></li>
-            <li><a href="sam05.php">SAM05</a></li>
-            <li><a href="dim06.php">DIM06</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blocs <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="blocs.php?jour=ven">Vendredi</a></li>
+                  <li><a href="blocs.php?jour=sam">Samedi</a></li>
+                  <li><a href="blocs.php?jour=dim">Dimanche</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Places <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="ven04.php">Vendredi</a></li>
+                  <li><a href="sam05.php">Samedi</a></li>
+                  <li><a href="dim06.php">Dimanche</a></li>
+                </ul>
+            </li>
             <li><a href="users.php">Spectateurs</a></li>
             <li><a href="reserv.php">Nb.Réserv.</a></li>
           </ul>

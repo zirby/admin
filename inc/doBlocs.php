@@ -1,13 +1,14 @@
 <?php
 require_once 'conn.php';
-/*
-$req = $pdo->prepare("UPDATE cd16_blocs_04 SET "
+$jour=$_GET['jour'];
+
+$req = $pdo->prepare("UPDATE cd16_blocs_".$jour." SET "
         . "max =?, "
         . "max_org =?, "
         . "price =?, "
         . "price_half =?, "
         . "price_abn =?, "
-        . "price_abn_half =?, "
+        . "price_abn_half =? "
          . "WHERE name= ? ");
 
 $req->execute([
@@ -20,6 +21,6 @@ $req->execute([
     $_POST['inputBloc']
         ]);
 
-*/
-header('Location:../blocs_ven.php');
+
+header('Location:../blocs.php?jour='.$jour);
 exit();
