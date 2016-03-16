@@ -19,16 +19,20 @@ $req->execute();
 while($res = $req->fetch()){
     // pour reservation countrytickets
     $Ubloc = strtoupper(str_replace("_", " ", $res->name));
-    $reqReserv = $pdo->prepare("SELECT SUM(nbplaces) as splaces, SUM(nbplaces_half) as splaces_half FROM cd16_reservations WHERE (jour =? AND supprime_le IS NULL) OR (jour='ABN3J' AND supprime_le IS NULL) AND  bloc=? ");
-    $reqReserv->execute([$jourReserv, $Ubloc]);
-    
-    if ($reqReserv->rowCount() > 0){
-        $resReserv = $reqReserv->fetch();
+    echo $Ubloc." + ".$jourReserv."<br />";
+    $reqReserv = $pdo->prepare("SELECT SUM(nbplaces) as splaces, SUM(nbplaces_half) as splaces_half FROM cd16_reservations WHERE (bloc=? AND jour =? AND supprime_le IS NULL) OR (bloc=? AND jour='ABN3J' AND supprime_le IS NULL)");
+    $reqReserv->execute([$jourReserv, $Ubloc, $jourReserv]);
+    $resReserv = $reqReserv->fetch();
+    print_r($resReserv);
+    print("<br />");
+        //var_dump($resReserv);
+        //die();
+        //echo $resReserv->splaces." + ".$resReserv->splaces_half."<br />";
         $valeur = intval($res->max) - intval($resReserv->splaces) - intval($resReserv->splaces_half);
-    }else{
+    /*}else{
         $valeur = intval($res->max);
-    }
+    }*/
     // je update le bloc de places
-    $reqUpdate=$pdo->prepare("UPDATE cd16_blocs_".$jour." SET places=? WHERE name=?" );
-    $reqUpdate->execute([$valeur]);
+    //$reqUpdate=$pdo->prepare("UPDATE cd16_blocs_".$jour." SET places=? WHERE name=?" );
+    //$reqUpdate->execute([$valeur, $res->name ]);
 }
