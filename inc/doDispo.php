@@ -18,8 +18,7 @@ function updBloc($bl, $jr){
     echo $Ubloc." + ".$jr."<br />";
     $reqReserv = $pdo->prepare("SELECT SUM(nbplaces) as splaces, SUM(nbplaces_half) as splaces_half FROM cd16_reservations WHERE (bloc=? AND jour =? AND supprime_le IS NULL) OR (bloc=? AND jour='ABN3J' AND supprime_le IS NULL)");
     //$reqReserv->execute();
-    //$reqReserv->execute(array($jr, $Ubloc, $jr));
-    $reqReserv->execute(["VEN04", "BLOC A", "VEN04"]);
+    $reqReserv->execute(array($Ubloc, $jr, $Ubloc));
     $resReserv = $reqReserv->fetch();
     print_r($resReserv);
     print("<br />");
@@ -29,16 +28,15 @@ $req = $pdo->prepare("SELECT * FROM cd16_blocs_".$jour );
 $req->execute();
 
 while($res = $req->fetch()){
-    updBloc($res->name, $jourReserv);
+    $Ubloc = strtoupper(str_replace("_", " ", $res->name));
+    $reqReserv = $pdo->prepare("SELECT SUM(nbplaces) as splaces, SUM(nbplaces_half) as splaces_half FROM cd16_reservations WHERE (bloc=? AND jour =? AND supprime_le IS NULL) OR (bloc=? AND jour='ABN3J' AND supprime_le IS NULL)");
+    $reqReserv->execute(array($Ubloc, $jourReserv, $Ubloc));
+    $resReserv = $reqReserv->fetch();
     // pour reservation countrytickets
-        //var_dump($resReserv);
-        //die();
-        //echo $resReserv->splaces." + ".$resReserv->splaces_half."<br />";
-        //$valeur = intval($res->max) - intval($resReserv->splaces) - intval($resReserv->splaces_half);
-    /*}else{
-        $valeur = intval($res->max);
-    }*/
+    echo $res->max." - ".$resReserv->splaces." + ".$resReserv->splaces_half." = ";
+    $valeur = intval($res->max) - intval($resReserv->splaces) - intval($resReserv->splaces_half);
+    echo $valeur."<br/>";
     // je update le bloc de places
-    //$reqUpdate=$pdo->prepare("UPDATE cd16_blocs_".$jour." SET places=? WHERE name=?" );
-    //$reqUpdate->execute([$valeur, $res->name ]);
+    $reqUpdate=$pdo->prepare("UPDATE cd16_blocs_".$jour." SET places=? WHERE name=?" );
+    $reqUpdate->execute([$valeur, $res->name ]);
 }

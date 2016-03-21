@@ -163,7 +163,8 @@ $(document).ready(function(){
     });
     
     $('#btnDoDispo').click( function () {
-            var jour = $('#jour').val();
+            var jour = $('#jour').text();
+            //console.log($('#jour'))
             $.ajax({
                 url:'inc/doDispo.php?jour='+jour,
                 success: function(data) {
